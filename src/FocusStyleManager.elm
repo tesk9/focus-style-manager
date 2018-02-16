@@ -27,6 +27,9 @@ and use this information to display the appropriate styles for the user.
 
 -}
 
+import Html
+import Html.Attributes
+import Json.Encode
 import Keyboard
 import Mouse
 import Touch
@@ -182,22 +185,43 @@ touchStarts =
 
 
 {-| -}
-type alias Style a =
-    { keyboardUser : a
-    , mouseUser : a
-    , touchUser : a
+type alias Style =
+    { keyboardUser : List ( String, String )
+    , mouseUser : List ( String, String )
+    , touchUser : List ( String, String )
     }
 
 
 {-| -}
-styles : Style a -> Model -> a
-styles { keyboardUser, mouseUser, touchUser } model =
-    case model of
-        KeyboardUser ->
-            keyboardUser
+styles : Style -> Model -> Html.Html msg
+styles style model =
+    Html.node "style"
+        [ Html.Attributes.property "innerHTML" <|
+            Json.Encode.string
+                (":focus {"
+                    ++ listStylesToCss style model
+                    ++ "}"
+                )
+        , Html.Attributes.scoped True
+        ]
+        []
 
-        MouseUser ->
-            mouseUser
 
-        TouchUser ->
-            touchUser
+listStylesToCss : Style -> Model -> String
+listStylesToCss { keyboardUser, mouseUser, touchUser } model =
+    String.join "" <|
+        List.map styleToCss <|
+            case model of
+                KeyboardUser ->
+                    keyboardUser
+
+                MouseUser ->
+                    mouseUser
+
+                TouchUser ->
+                    touchUser
+
+
+styleToCss : ( String, String ) -> String
+styleToCss ( propertyName, value ) =
+    propertyName ++ ": " ++ value ++ ";"
