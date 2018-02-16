@@ -26,31 +26,88 @@ and use this information to display the appropriate styles for the user.
 
 -}
 
+import Keyboard
+import Mouse
 
-{-| -}
+
+{-| Use `keyboardUser` or `mouseUser` to initialize a Model.
+-}
 type Model
     = KeyboardUser
     | MouseUser
 
 
-{-| -}
+{-| Initialize the user as primarily interested in Keyboard use.
+
+    import KeyboardFocusManager
+
+    type alias Model =
+        { id : Int
+        , name : String
+        , focusStyleManager : KeyboardFocusManager.Model
+        }
+
+    init : { id : Int, name : String } -> Model
+    init flagsData =
+        { id = flagsData.id
+        , name = flagsData.name
+        , focusStyleManager = KeyboardFocusManager.keyboardUser
+        }
+
+-}
 keyboardUser : Model
 keyboardUser =
     KeyboardUser
 
 
-{-| -}
+{-| Initialize the user as primarily interested in Mouse use.
+
+    import KeyboardFocusManager
+
+    type alias Model =
+        { id : Int
+        , name : String
+        , focusStyleManager : KeyboardFocusManager.Model
+        }
+
+    init : { id : Int, name : String } -> Model
+    init flagsData =
+        { id = flagsData.id
+        , name = flagsData.name
+        , focusStyleManager = KeyboardFocusManager.mouseUser
+        }
+
+-}
 mouseUser : Model
 mouseUser =
     MouseUser
 
 
+{-| -}
 type Msg
     = KeyboardInteraction
     | MouseInteraction
 
 
-{-| -}
+{-| Use this function in your update branch to update the styling when the user
+changes interaction styles.
+
+    import FocusStyleManager
+
+    type Msg
+        = -- You probably have some other branches here too :)
+          FocusStyleManagerMsg FocusStyleManager.Msg
+
+    update msg model =
+        case msg of
+            FocusStyleManagerMsg focusStyleManagerMsg ->
+                let
+                    focusStyleManager =
+                        FocusStyleManager.update focusStyleManagerMsg model.focusStyleManager
+                in
+                { model | focusStyleManager = focusStyleManager }
+
+-}
 update : Msg -> Model -> Model
 update msg model =
     case msg of
@@ -61,7 +118,11 @@ update msg model =
             MouseUser
 
 
-{-| -}
+{-| We subscribe to key downs & to mouse downs (not presses, ups, clicks, etc.).
+We don't subscribe to events that wouldn't change our user type (e.g., we
+only care about key downs when we think that the current user only uses the mouse
+because it means we need to switch user types).
+-}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     case model of
