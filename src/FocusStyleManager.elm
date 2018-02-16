@@ -154,22 +154,30 @@ because it means we need to switch user types).
 -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch <|
-        case model of
-            MouseUser ->
-                [ Keyboard.downs (always KeyboardInteraction)
-                , Touch.start (always TouchInteraction)
-                ]
+    case model of
+        MouseUser ->
+            Sub.batch [ keyDowns, touchStarts ]
 
-            KeyboardUser ->
-                [ Mouse.downs (always MouseInteraction)
-                , Touch.start (always TouchInteraction)
-                ]
+        KeyboardUser ->
+            Sub.batch [ mouseDowns, touchStarts ]
 
-            TouchUser ->
-                [ Keyboard.downs (always KeyboardInteraction)
-                , Mouse.downs (always MouseInteraction)
-                ]
+        TouchUser ->
+            Sub.batch [ keyDowns, mouseDowns ]
+
+
+keyDowns : Sub Msg
+keyDowns =
+    Keyboard.downs (always KeyboardInteraction)
+
+
+mouseDowns : Sub Msg
+mouseDowns =
+    Mouse.downs (always MouseInteraction)
+
+
+touchStarts : Sub Msg
+touchStarts =
+    Touch.start (always TouchInteraction)
 
 
 {-| -}
