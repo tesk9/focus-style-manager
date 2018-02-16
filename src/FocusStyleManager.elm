@@ -232,8 +232,8 @@ styleToCss ( propertyName, value ) =
 
 
 {-| -}
-type alias CustomStyle a msg =
-    { styleToTag : a -> Html.Html msg
+type alias CustomStyle a html =
+    { styleToTag : a -> html
     , keyboardUser : a
     , mouseUser : a
     , touchUser : a
@@ -241,7 +241,7 @@ type alias CustomStyle a msg =
 
 
 {-| -}
-customStyle : CustomStyle a msg -> Model -> Html.Html msg
+customStyle : CustomStyle a html -> Model -> html
 customStyle { keyboardUser, mouseUser, touchUser, styleToTag } model =
     styleToTag <|
         case model of
