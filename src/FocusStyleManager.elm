@@ -155,7 +155,7 @@ update msg model =
             TouchUser
 
 
-{-| We subscribe to key downs, to mouse downs, and touch starts (not presses, ups, clicks, etc.).
+{-| We subscribe to key downs, to mouse moves, and touch starts (not presses, ups, clicks, etc.).
 We don't subscribe to events that wouldn't change our user type (e.g., we
 care about key downs when we think that the current user only uses the mouse
 because it means we need to switch user types).
@@ -167,10 +167,10 @@ subscriptions model =
             Sub.batch [ keyDowns, touchStarts ]
 
         KeyboardUser ->
-            Sub.batch [ mouseDowns, touchStarts ]
+            Sub.batch [ mouseMoves, touchStarts ]
 
         TouchUser ->
-            Sub.batch [ keyDowns, mouseDowns ]
+            Sub.batch [ keyDowns, mouseMoves ]
 
 
 keyDowns : Sub Msg
@@ -178,9 +178,9 @@ keyDowns =
     Keyboard.downs (always KeyboardInteraction)
 
 
-mouseDowns : Sub Msg
-mouseDowns =
-    Mouse.downs (always MouseInteraction)
+mouseMoves : Sub Msg
+mouseMoves =
+    Mouse.moves (always MouseInteraction)
 
 
 touchStarts : Sub Msg
