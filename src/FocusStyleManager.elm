@@ -194,34 +194,57 @@ type alias Style =
 
 {-| -}
 styles : Style -> Model -> Html.Html msg
-styles style model =
-    Html.node "style"
-        [ Html.Attributes.property "innerHTML" <|
-            Json.Encode.string
-                (":focus {"
-                    ++ listStylesToCss style model
-                    ++ "}"
-                )
-        , Html.Attributes.scoped True
-        ]
-        []
+styles style =
+    customStyles
+        { styleToString = simpleStyleToString
+        , keyboardUser = style.keyboardUser
+        , mouseUser = style.mouseUser
+        , touchUser = style.touchUser
+        }
 
 
-listStylesToCss : Style -> Model -> String
-listStylesToCss { keyboardUser, mouseUser, touchUser } model =
-    String.join "" <|
-        List.map styleToCss <|
-            case model of
-                KeyboardUser ->
-                    keyboardUser
+simpleStyleToString : List ( String, String ) -> String
+simpleStyleToString styles =
+    styles
+        |> List.map styleToCss
+        |> String.join ""
+        |> addFocusPseudoSelector
 
-                MouseUser ->
-                    mouseUser
 
-                TouchUser ->
-                    touchUser
+addFocusPseudoSelector : String -> String
+addFocusPseudoSelector styles =
+    ":focus {" ++ styles ++ "}"
 
 
 styleToCss : ( String, String ) -> String
 styleToCss ( propertyName, value ) =
     propertyName ++ ": " ++ value ++ ";"
+
+
+{-| -}
+type alias CustomStyle a =
+    { styleToString : a -> String
+    , keyboardUser : a
+    , mouseUser : a
+    , touchUser : a
+    }
+
+
+{-| -}
+customStyles : CustomStyle a -> Model -> Html.Html msg
+customStyles { keyboardUser, mouseUser, touchUser, styleToString } model =
+    Html.node "style"
+        [ Html.Attributes.property "innerHTML" <|
+            (Json.Encode.string << styleToString) <|
+                case model of
+                    KeyboardUser ->
+                        keyboardUser
+
+                    MouseUser ->
+                        mouseUser
+
+                    TouchUser ->
+                        touchUser
+        , Html.Attributes.scoped True
+        ]
+        []
