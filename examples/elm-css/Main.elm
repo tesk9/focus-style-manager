@@ -4,9 +4,8 @@ import Css
 import Css.Colors
 import Css.Foreign
 import FocusStyleManager
-import Html
-import Html.Attributes
-import Html.Styled
+import Html.Styled as Html
+import Html.Styled.Attributes as Attributes
 
 
 {-| Compile using `elm-make Main.elm --output index.html`
@@ -58,7 +57,6 @@ viewInputs model =
                     Css.Foreign.global
                         [ Css.Foreign.everything [ Css.focus [ relevantStyle ] ]
                         ]
-                        |> Html.Styled.toUnstyled
             , keyboardUser = Css.outline3 (Css.px 3) Css.solid Css.Colors.fuchsia
             , mouseUser = Css.outline Css.none
             , touchUser = Css.outline Css.none
@@ -71,10 +69,10 @@ viewInput : String -> Html.Html msg
 viewInput description =
     Html.label []
         [ Html.input
-            [ Html.Attributes.type_ "radio"
-            , Html.Attributes.name "alphabet"
-            , Html.Attributes.value description
-            , Html.Attributes.id description
+            [ Attributes.type_ "radio"
+            , Attributes.name "alphabet"
+            , Attributes.value description
+            , Attributes.id description
             ]
             []
         , Html.text description
