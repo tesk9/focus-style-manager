@@ -30,11 +30,12 @@ import Keyboard
 import Mouse
 
 
-{-| Use `keyboardUser` or `mouseUser` to initialize a Model.
+{-| Use `keyboardUser`, `mouseUser`, or `touchUser` to initialize a Model.
 -}
 type Model
     = KeyboardUser
     | MouseUser
+    | TouchUser
 
 
 {-| Initialize the user as primarily interested in Keyboard use.
@@ -83,10 +84,34 @@ mouseUser =
     MouseUser
 
 
+{-| Initialize the user as primarily interested in Touch (aka tablet and phone) use.
+
+    import KeyboardFocusManager
+
+    type alias Model =
+        { id : Int
+        , name : String
+        , focusStyleManager : KeyboardFocusManager.Model
+        }
+
+    init : { id : Int, name : String } -> Model
+    init flagsData =
+        { id = flagsData.id
+        , name = flagsData.name
+        , focusStyleManager = KeyboardFocusManager.touchUser
+        }
+
+-}
+touchUser : Model
+touchUser =
+    TouchUser
+
+
 {-| -}
 type Msg
     = KeyboardInteraction
     | MouseInteraction
+    | TouchInteraction
 
 
 {-| Use this function in your update branch to update the styling when the user
@@ -117,20 +142,35 @@ update msg model =
         MouseInteraction ->
             MouseUser
 
+        TouchInteraction ->
+            TouchUser
 
-{-| We subscribe to key downs & to mouse downs (not presses, ups, clicks, etc.).
+
+{-| We subscribe to key downs, to mouse downs, and touch downs (not presses, ups, clicks, etc.).
 We don't subscribe to events that wouldn't change our user type (e.g., we
-only care about key downs when we think that the current user only uses the mouse
+care about key downs when we think that the current user only uses the mouse
 because it means we need to switch user types).
 -}
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    case model of
-        MouseUser ->
-            Keyboard.downs (always KeyboardInteraction)
+    Sub.batch <|
+        case model of
+            MouseUser ->
+                [ Keyboard.downs (always KeyboardInteraction)
 
-        KeyboardUser ->
-            Mouse.downs (always MouseInteraction)
+                --TODO: subscribe to touch down event
+                ]
+
+            KeyboardUser ->
+                [ Mouse.downs (always MouseInteraction)
+
+                --TODO: subscribe to touch down event
+                ]
+
+            TouchUser ->
+                [ Keyboard.downs (always KeyboardInteraction)
+                , Mouse.downs (always MouseInteraction)
+                ]
 
 
 {-| -}
