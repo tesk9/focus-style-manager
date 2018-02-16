@@ -1,6 +1,7 @@
 module FocusStyleManager
     exposing
         ( Model
+        , Msg
         , keyboardUser
         , mouseUser
         , styles
@@ -60,9 +61,15 @@ update msg model =
 
 
 {-| -}
-subscriptions : Model -> Sub msg
+subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    case model of
+        MouseUser ->
+            Keyboard.downs (always KeyboardInteraction)
+
+        KeyboardUser ->
+            --TODO
+            Sub.none
 
 
 {-| -}
