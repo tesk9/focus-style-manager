@@ -6,6 +6,7 @@ module FocusStyleManager
         , mouseUser
         , styles
         , subscriptions
+        , update
         )
 
 {-| Showing focus styles is vital for users who interact with webpages primarily
