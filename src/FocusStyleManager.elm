@@ -4,7 +4,7 @@ module FocusStyleManager
         , Model
         , Msg
         , Style
-        , customStyles
+        , customStyle
         , keyboardUser
         , mouseUser
         , styles
@@ -27,7 +27,7 @@ and use this information to display the appropriate styles for the user.
 
 @docs Style, styles
 
-@docs CustomStyle, customStyles
+@docs CustomStyle, customStyle
 
 -}
 
@@ -199,20 +199,26 @@ type alias Style =
 {-| -}
 styles : Style -> Model -> Html.Html msg
 styles style =
-    customStyles
-        { styleToString = simpleStyleToString
+    customStyle
+        { styleToTag = stylesToStyleElement
         , keyboardUser = style.keyboardUser
         , mouseUser = style.mouseUser
         , touchUser = style.touchUser
         }
 
 
-simpleStyleToString : List ( String, String ) -> String
-simpleStyleToString styles =
-    styles
-        |> List.map styleToCss
-        |> String.join ""
-        |> addFocusPseudoSelector
+stylesToStyleElement : List ( String, String ) -> Html.Html msg
+stylesToStyleElement stylePairs =
+    Html.node "style"
+        [ stylePairs
+            |> List.map styleToCss
+            |> String.join ""
+            |> addFocusPseudoSelector
+            |> Json.Encode.string
+            |> Html.Attributes.property "innerHTML"
+        , Html.Attributes.scoped True
+        ]
+        []
 
 
 addFocusPseudoSelector : String -> String
@@ -226,8 +232,8 @@ styleToCss ( propertyName, value ) =
 
 
 {-| -}
-type alias CustomStyle a =
-    { styleToString : a -> String
+type alias CustomStyle a msg =
+    { styleToTag : a -> Html.Html msg
     , keyboardUser : a
     , mouseUser : a
     , touchUser : a
@@ -235,20 +241,15 @@ type alias CustomStyle a =
 
 
 {-| -}
-customStyles : CustomStyle a -> Model -> Html.Html msg
-customStyles { keyboardUser, mouseUser, touchUser, styleToString } model =
-    Html.node "style"
-        [ Html.Attributes.property "innerHTML" <|
-            (Json.Encode.string << styleToString) <|
-                case model of
-                    KeyboardUser ->
-                        keyboardUser
+customStyle : CustomStyle a msg -> Model -> Html.Html msg
+customStyle { keyboardUser, mouseUser, touchUser, styleToTag } model =
+    styleToTag <|
+        case model of
+            KeyboardUser ->
+                keyboardUser
 
-                    MouseUser ->
-                        mouseUser
+            MouseUser ->
+                mouseUser
 
-                    TouchUser ->
-                        touchUser
-        , Html.Attributes.scoped True
-        ]
-        []
+            TouchUser ->
+                touchUser
