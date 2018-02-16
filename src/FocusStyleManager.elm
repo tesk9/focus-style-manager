@@ -68,8 +68,7 @@ subscriptions model =
             Keyboard.downs (always KeyboardInteraction)
 
         KeyboardUser ->
-            --TODO
-            Sub.none
+            Mouse.downs (always MouseInteraction)
 
 
 {-| -}
