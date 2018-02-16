@@ -1,8 +1,10 @@
 module FocusStyleManager
     exposing
-        ( Model
+        ( CustomStyle
+        , Model
         , Msg
         , Style
+        , customStyles
         , keyboardUser
         , mouseUser
         , styles
@@ -24,6 +26,8 @@ and use this information to display the appropriate styles for the user.
 @docs Msg, update, subscriptions
 
 @docs Style, styles
+
+@docs CustomStyle, customStyles
 
 -}
 
