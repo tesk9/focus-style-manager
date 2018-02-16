@@ -32,6 +32,14 @@ init =
 
 view : Model -> Html.Html Msg
 view model =
+    Html.main_ []
+        [ Html.h1 [] [ Html.text "tesk9/focus-style-manager example" ]
+        , viewInputs model
+        ]
+
+
+viewInputs : Model -> Html.Html Msg
+viewInputs model =
     Html.div []
         [ Html.fieldset []
             [ Html.legend [] [ Html.text "Try clicking through these options. Then try tabbing/arrowing!" ]
