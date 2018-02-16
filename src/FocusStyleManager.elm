@@ -1,15 +1,71 @@
 module FocusStyleManager
     exposing
-        ( style
+        ( Model
+        , keyboardUser
+        , mouseUser
+        , styles
+        , subscriptions
         )
 
-{-|
+{-| Showing focus styles is vital for users who interact with webpages primarily
+through keyboard actions.
 
-@docs style
+Focus styles can be confusing/unhelpful for users who interact with applications
+primarily through point & click.
+
+Detect whether the user's last interaction was a keyboard event or a mouse event,
+and use this information to display the appropriate styles for the user.
+
+@docs Model, keyboardUser, mouseUser
+
+@docs Msg, update, subscriptions
+
+@docs styles
 
 -}
 
 
-style : String
-style =
+{-| -}
+type Model
+    = KeyboardUser
+    | MouseUser
+
+
+{-| -}
+keyboardUser : Model
+keyboardUser =
+    KeyboardUser
+
+
+{-| -}
+mouseUser : Model
+mouseUser =
+    MouseUser
+
+
+type Msg
+    = KeyboardInteraction
+    | MouseInteraction
+
+
+{-| -}
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        KeyboardInteraction ->
+            KeyboardUser
+
+        MouseInteraction ->
+            MouseUser
+
+
+{-| -}
+subscriptions : Model -> Sub msg
+subscriptions model =
+    Sub.none
+
+
+{-| -}
+styles : String
+styles =
     "TODO"
