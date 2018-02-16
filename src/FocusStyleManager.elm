@@ -2,6 +2,7 @@ module FocusStyleManager
     exposing
         ( Model
         , Msg
+        , Style
         , keyboardUser
         , mouseUser
         , styles
@@ -22,7 +23,7 @@ and use this information to display the appropriate styles for the user.
 
 @docs Msg, update, subscriptions
 
-@docs styles
+@docs Style, styles
 
 -}
 
@@ -181,6 +182,22 @@ touchStarts =
 
 
 {-| -}
-styles : String
-styles =
-    "TODO"
+type alias Style a =
+    { keyboardUser : a
+    , mouseUser : a
+    , touchUser : a
+    }
+
+
+{-| -}
+styles : Style a -> Model -> a
+styles { keyboardUser, mouseUser, touchUser } model =
+    case model of
+        KeyboardUser ->
+            keyboardUser
+
+        MouseUser ->
+            mouseUser
+
+        TouchUser ->
+            touchUser

@@ -35,26 +35,37 @@ view model =
     Html.div []
         [ Html.fieldset []
             [ Html.legend [] [ Html.text "Try clicking through these options. Then try tabbing/arrowing!" ]
-            , viewInput "a"
-            , viewInput "b"
-            , viewInput "c"
-            , viewInput "d"
+            , viewInput model.focusStyleManager "a"
+            , viewInput model.focusStyleManager "b"
+            , viewInput model.focusStyleManager "c"
+            , viewInput model.focusStyleManager "d"
             ]
         ]
 
 
-viewInput : String -> Html.Html msg
-viewInput description =
+viewInput : FocusStyleManager.Model -> String -> Html.Html msg
+viewInput focusStyleManager description =
     Html.label []
         [ Html.input
             [ Html.Attributes.type_ "radio"
             , Html.Attributes.name "alphabet"
             , Html.Attributes.value description
             , Html.Attributes.id description
+            , inputFocusStyles focusStyleManager
             ]
             []
         , Html.text description
         ]
+
+
+inputFocusStyles : FocusStyleManager.Model -> Html.Attribute msg
+inputFocusStyles focusStyleManager =
+    FocusStyleManager.styles
+        { keyboardUser = Html.Attributes.style [ ( "outline", "2px solid pink" ) ]
+        , mouseUser = Html.Attributes.style [ ( "outline", "1px dashed red" ) ]
+        , touchUser = Html.Attributes.style [ ( "outline", "none" ) ]
+        }
+        focusStyleManager
 
 
 type Msg
