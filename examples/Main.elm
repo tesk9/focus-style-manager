@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import FocusStyleManager
 import Html
+import Html.Attributes
 
 
 {-| Compile using `elm-make Main.elm --output index.html`
@@ -31,7 +32,29 @@ init =
 
 view : Model -> Html.Html Msg
 view model =
-    Html.div [] []
+    Html.div []
+        [ Html.fieldset []
+            [ Html.legend [] [ Html.text "Try clicking through these options. Then try tabbing/arrowing!" ]
+            , viewInput "a"
+            , viewInput "b"
+            , viewInput "c"
+            , viewInput "d"
+            ]
+        ]
+
+
+viewInput : String -> Html.Html msg
+viewInput description =
+    Html.label []
+        [ Html.input
+            [ Html.Attributes.type_ "radio"
+            , Html.Attributes.name "alphabet"
+            , Html.Attributes.value description
+            , Html.Attributes.id description
+            ]
+            []
+        , Html.text description
+        ]
 
 
 type Msg
