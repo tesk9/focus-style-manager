@@ -41,19 +41,19 @@ type Model
 
 {-| Initialize the user as primarily interested in Keyboard use.
 
-    import KeyboardFocusManager
+    import FocusStyleManager
 
     type alias Model =
         { id : Int
         , name : String
-        , focusStyleManager : KeyboardFocusManager.Model
+        , focusStyleManager : FocusStyleManager.Model
         }
 
     init : { id : Int, name : String } -> Model
     init flagsData =
         { id = flagsData.id
         , name = flagsData.name
-        , focusStyleManager = KeyboardFocusManager.keyboardUser
+        , focusStyleManager = FocusStyleManager.keyboardUser
         }
 
 -}
@@ -64,19 +64,19 @@ keyboardUser =
 
 {-| Initialize the user as primarily interested in Mouse use.
 
-    import KeyboardFocusManager
+    import FocusStyleManager
 
     type alias Model =
         { id : Int
         , name : String
-        , focusStyleManager : KeyboardFocusManager.Model
+        , focusStyleManager : FocusStyleManager.Model
         }
 
     init : { id : Int, name : String } -> Model
     init flagsData =
         { id = flagsData.id
         , name = flagsData.name
-        , focusStyleManager = KeyboardFocusManager.mouseUser
+        , focusStyleManager = FocusStyleManager.mouseUser
         }
 
 -}
@@ -87,19 +87,19 @@ mouseUser =
 
 {-| Initialize the user as primarily interested in Touch (aka tablet and phone) use.
 
-    import KeyboardFocusManager
+    import FocusStyleManager
 
     type alias Model =
         { id : Int
         , name : String
-        , focusStyleManager : KeyboardFocusManager.Model
+        , focusStyleManager : FocusStyleManager.Model
         }
 
     init : { id : Int, name : String } -> Model
     init flagsData =
         { id = flagsData.id
         , name = flagsData.name
-        , focusStyleManager = KeyboardFocusManager.touchUser
+        , focusStyleManager = FocusStyleManager.touchUser
         }
 
 -}
