@@ -28,6 +28,7 @@ and use this information to display the appropriate styles for the user.
 
 import Keyboard
 import Mouse
+import Touch
 
 
 {-| Use `keyboardUser`, `mouseUser`, or `touchUser` to initialize a Model.
@@ -146,7 +147,7 @@ update msg model =
             TouchUser
 
 
-{-| We subscribe to key downs, to mouse downs, and touch downs (not presses, ups, clicks, etc.).
+{-| We subscribe to key downs, to mouse downs, and touch starts (not presses, ups, clicks, etc.).
 We don't subscribe to events that wouldn't change our user type (e.g., we
 care about key downs when we think that the current user only uses the mouse
 because it means we need to switch user types).
@@ -157,14 +158,12 @@ subscriptions model =
         case model of
             MouseUser ->
                 [ Keyboard.downs (always KeyboardInteraction)
-
-                --TODO: subscribe to touch down event
+                , Touch.start (always TouchInteraction)
                 ]
 
             KeyboardUser ->
                 [ Mouse.downs (always MouseInteraction)
-
-                --TODO: subscribe to touch down event
+                , Touch.start (always TouchInteraction)
                 ]
 
             TouchUser ->
