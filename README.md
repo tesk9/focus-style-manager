@@ -27,6 +27,9 @@ please check out [the elm-lang guide](https://guide.elm-lang.org/architecture/).
 Note that the library uses subscriptions rather than Html events to track user events --
 be sure to wire those up!
 
+### Example Use
+
+![Demonstration of behavior](https://user-images.githubusercontent.com/8811312/36335614-0c391842-1336-11e8-8571-863221bae289.gif)
 
 ### Example Code
 
