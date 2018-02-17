@@ -181,7 +181,16 @@ touchStarts =
     Touch.start (always TouchInteraction)
 
 
-{-| -}
+{-| Specify the styles that you want to use for each user type.
+
+    styleSet : FocusStyleManager.style
+    styleSet =
+        { keyboardUser = [ ( "outline", "3px solid pink" ) ]
+        , mouseUser = [ ( "outline", "none" ) ]
+        , touchUser = [ ( "outline", "none" ) ]
+        }
+
+-}
 type alias Style =
     { keyboardUser : List ( String, String )
     , mouseUser : List ( String, String )
@@ -189,7 +198,21 @@ type alias Style =
     }
 
 
-{-| -}
+{-| Creates a scoped [style html node](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
+The appropriate styles for the user will be applied to elements with the
+`:focus` pseudoselector.
+
+    view model =
+        div []
+            [ FocusStyleManager.styles
+                { keyboardUser = [ ( "outline", "3px solid pink" ) ]
+                , mouseUser = [ ( "outline", "none" ) ]
+                , touchUser = [ ( "outline", "none" ) ]
+                }
+                model.focusStyleManager
+            ]
+
+-}
 styles : Style -> Model -> Html.Html msg
 styles style =
     customStyle
