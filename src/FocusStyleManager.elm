@@ -224,7 +224,9 @@ styleToCss ( propertyName, value ) =
     propertyName ++ ": " ++ value ++ ";"
 
 
-{-| -}
+{-| Configuration for `customStyle`. Unless you're using an elm-based css
+preprocesor of some kind, you probably want `Style` instead.
+-}
 type alias CustomStyle a html =
     { styleToTag : a -> html
     , keyboardUser : a
@@ -233,7 +235,9 @@ type alias CustomStyle a html =
     }
 
 
-{-| -}
+{-| Create a custom output for your styles. Unless you're using an elm-based css
+preprocesor of some kind, you probably want `style` instead.
+-}
 customStyle : CustomStyle a html -> Model -> html
 customStyle { keyboardUser, mouseUser, touchUser, styleToTag } model =
     styleToTag <|
