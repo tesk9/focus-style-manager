@@ -1,7 +1,7 @@
 {
   "name": "focus-style-manager",
   "version": "1.0.0",
-  "description": "",
+  "description": "Customize focus styles dynamically as users change interaction styles",
   "main": "elm.js",
   "directories": {
     "test": "tests"
