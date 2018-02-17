@@ -28,6 +28,8 @@ Note that the library uses subscriptions rather than Html events to track user e
 be sure to wire those up!
 
 
+### Example Code
+
 ```
 import FocusStyleManager
 
@@ -79,3 +81,10 @@ subscriptions model =
     Sub.map FocusStyleManagerMsg
         (FocusStyleManager.subscriptions model.focusStyleManager)
 ```
+
+Note:
+
+The repository contains two examples, one of which is using this module with
+[elm-css](http://package.elm-lang.org/packages/rtfeldman/elm-css/latest).
+If your application uses elm-css or another styling pre-processor,
+please be sure to check out the examples folder on github.
