@@ -53,7 +53,7 @@ init =
 
 view model =
     Html.main_ []
-        [ FocusStyleManager.styles
+        [ FocusStyleManager.style
             { keyboardUser = [ ( "outline", "3px solid pink" ) ]
             , mouseUser = [ ( "outline", "none" ) ]
             , touchUser = [ ( "outline", "none" ) ]

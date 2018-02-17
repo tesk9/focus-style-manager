@@ -48,7 +48,7 @@ viewInputs model =
             , viewInput "c"
             , viewInput "d"
             ]
-        , FocusStyleManager.styles
+        , FocusStyleManager.style
             { keyboardUser = [ ( "outline", "3px solid pink" ) ]
             , mouseUser = [ ( "outline", "none" ) ]
             , touchUser = [ ( "outline", "none" ) ]

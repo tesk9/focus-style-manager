@@ -7,7 +7,7 @@ module FocusStyleManager
         , customStyle
         , keyboardUser
         , mouseUser
-        , styles
+        , style
         , subscriptions
         , update
         )
@@ -18,7 +18,7 @@ module FocusStyleManager
 
 @docs Msg, update, subscriptions
 
-@docs Style, styles
+@docs Style, style
 
 @docs CustomStyle, customStyle
 
@@ -204,7 +204,7 @@ The appropriate styles for the user will be applied to elements with the
 
     view model =
         div []
-            [ FocusStyleManager.styles
+            [ FocusStyleManager.style
                 { keyboardUser = [ ( "outline", "3px solid pink" ) ]
                 , mouseUser = [ ( "outline", "none" ) ]
                 , touchUser = [ ( "outline", "none" ) ]
@@ -213,8 +213,8 @@ The appropriate styles for the user will be applied to elements with the
             ]
 
 -}
-styles : Style -> Model -> Html.Html msg
-styles style =
+style : Style -> Model -> Html.Html msg
+style style =
     customStyle
         { styleToTag = stylesToStyleElement
         , keyboardUser = style.keyboardUser
