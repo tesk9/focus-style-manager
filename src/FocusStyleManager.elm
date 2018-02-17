@@ -12,14 +12,7 @@ module FocusStyleManager
         , update
         )
 
-{-| Showing focus styles is vital for users who interact with webpages primarily
-through keyboard actions.
-
-Focus styles can be confusing/unhelpful for users who interact with applications
-primarily through point & click.
-
-Detect whether the user's last interaction was a keyboard event or a mouse event,
-and use this information to display the appropriate styles for the user.
+{-|
 
 @docs Model, keyboardUser, mouseUser
 
