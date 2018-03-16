@@ -59,7 +59,6 @@ viewInputs model =
                         ]
             , keyboardUser = Css.outline3 (Css.px 3) Css.solid Css.Colors.fuchsia
             , mouseUser = Css.outline Css.none
-            , touchUser = Css.outline Css.none
             }
             model.focusStyleManager
         ]

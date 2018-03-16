@@ -8,8 +8,8 @@ through keyboard actions.
 Focus styles can be confusing/unhelpful for users who interact with applications
 primarily through point & click.
 
-This library will detect whether the user's last interaction was a keyboard event,
-mouse event, or touch event.
+This library will detect whether the user's last interaction was a keyboard event
+or mouse event.
 
 Then, it will use this state to display the styles that you specify for this
 type of user.
@@ -59,7 +59,6 @@ view model =
         [ FocusStyleManager.style
             { keyboardUser = [ ( "outline", "3px solid pink" ) ]
             , mouseUser = [ ( "outline", "none" ) ]
-            , touchUser = [ ( "outline", "none" ) ]
             }
             model.focusStyleManager
         , Html.text "Probably your application has other content too!"

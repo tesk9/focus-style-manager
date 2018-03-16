@@ -29,15 +29,13 @@ import Html.Attributes
 import Json.Encode
 import Keyboard
 import Mouse
-import Touch
 
 
-{-| Use `keyboardUser`, `mouseUser`, or `touchUser` to initialize a Model.
+{-| Use `keyboardUser` or `mouseUser` to initialize a Model.
 -}
 type Model
     = KeyboardUser
     | MouseUser
-    | TouchUser
 
 
 {-| Initialize the user as primarily interested in Keyboard use.
@@ -86,34 +84,10 @@ mouseUser =
     MouseUser
 
 
-{-| Initialize the user as primarily interested in Touch (aka tablet and phone) use.
-
-    import FocusStyleManager
-
-    type alias Model =
-        { id : Int
-        , name : String
-        , focusStyleManager : FocusStyleManager.Model
-        }
-
-    init : { id : Int, name : String } -> Model
-    init flagsData =
-        { id = flagsData.id
-        , name = flagsData.name
-        , focusStyleManager = FocusStyleManager.touchUser
-        }
-
--}
-touchUser : Model
-touchUser =
-    TouchUser
-
-
 {-| -}
 type Msg
     = KeyboardInteraction
     | MouseInteraction
-    | TouchInteraction
 
 
 {-| Use this function in your update branch to update the styling when the user
@@ -144,11 +118,8 @@ update msg model =
         MouseInteraction ->
             MouseUser
 
-        TouchInteraction ->
-            TouchUser
 
-
-{-| We subscribe to key downs, to mouse moves, and touch starts (not presses, ups, clicks, etc.).
+{-| We subscribe to key downs and to mouse moves (not presses, ups, clicks, etc.).
 We don't subscribe to events that wouldn't change our user type (e.g., we
 care about key downs when we think that the current user only uses the mouse
 because it means we need to switch user types).
@@ -157,13 +128,10 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     case model of
         MouseUser ->
-            Sub.batch [ keyDowns, touchStarts ]
+            keyDowns
 
         KeyboardUser ->
-            Sub.batch [ mouseMoves, touchStarts ]
-
-        TouchUser ->
-            Sub.batch [ keyDowns, mouseMoves ]
+            mouseMoves
 
 
 keyDowns : Sub Msg
@@ -176,25 +144,18 @@ mouseMoves =
     Mouse.moves (always MouseInteraction)
 
 
-touchStarts : Sub Msg
-touchStarts =
-    Touch.start (always TouchInteraction)
-
-
 {-| Specify the styles that you want to use for each user type.
 
     styleSet : FocusStyleManager.style
     styleSet =
         { keyboardUser = [ ( "outline", "3px solid pink" ) ]
         , mouseUser = [ ( "outline", "none" ) ]
-        , touchUser = [ ( "outline", "none" ) ]
         }
 
 -}
 type alias Style =
     { keyboardUser : List ( String, String )
     , mouseUser : List ( String, String )
-    , touchUser : List ( String, String )
     }
 
 
@@ -207,7 +168,6 @@ The appropriate styles for the user will be applied to elements with the
             [ FocusStyleManager.style
                 { keyboardUser = [ ( "outline", "3px solid pink" ) ]
                 , mouseUser = [ ( "outline", "none" ) ]
-                , touchUser = [ ( "outline", "none" ) ]
                 }
                 model.focusStyleManager
             ]
@@ -219,7 +179,6 @@ style style =
         { styleToTag = stylesToStyleElement
         , keyboardUser = style.keyboardUser
         , mouseUser = style.mouseUser
-        , touchUser = style.touchUser
         }
 
 
@@ -254,7 +213,6 @@ type alias CustomStyle a html =
     { styleToTag : a -> html
     , keyboardUser : a
     , mouseUser : a
-    , touchUser : a
     }
 
 
@@ -262,7 +220,7 @@ type alias CustomStyle a html =
 preprocesor of some kind, you probably want `style` instead.
 -}
 customStyle : CustomStyle a html -> Model -> html
-customStyle { keyboardUser, mouseUser, touchUser, styleToTag } model =
+customStyle { keyboardUser, mouseUser, styleToTag } model =
     styleToTag <|
         case model of
             KeyboardUser ->
@@ -270,6 +228,3 @@ customStyle { keyboardUser, mouseUser, touchUser, styleToTag } model =
 
             MouseUser ->
                 mouseUser
-
-            TouchUser ->
-                touchUser
