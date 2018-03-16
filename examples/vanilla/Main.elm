@@ -51,7 +51,6 @@ viewInputs model =
         , FocusStyleManager.style
             { keyboardUser = [ ( "outline", "3px solid pink" ) ]
             , mouseUser = [ ( "outline", "none" ) ]
-            , touchUser = [ ( "outline", "none" ) ]
             }
             model.focusStyleManager
         ]
